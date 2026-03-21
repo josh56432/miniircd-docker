@@ -1,0 +1,27 @@
+#!/bin/sh
+
+ARGS=""
+
+[ -n "$CHANNEL_LOG_DIR" ] && ARGS="$ARGS --channel-log-dir $CHANNEL_LOG_DIR"
+[ -n "$CHROOT" ]          && ARGS="$ARGS --chroot $CHROOT"
+[ -n "$CLOAK" ]           && ARGS="$ARGS --cloak $CLOAK"
+[ -n "$DAEMON" ]          && ARGS="$ARGS --daemon"
+[ -n "$IPV6" ]            && ARGS="$ARGS --ipv6"
+[ -n "$DEBUG" ]           && ARGS="$ARGS --debug"
+[ -n "$LISTEN" ]          && ARGS="$ARGS --listen $LISTEN"
+[ -n "$LOG_COUNT" ]       && ARGS="$ARGS --log-count $LOG_COUNT"
+[ -n "$LOG_FILE" ]        && ARGS="$ARGS --log-file $LOG_FILE"
+[ -n "$LOG_MAX_SIZE" ]    && ARGS="$ARGS --log-max-size $LOG_MAX_SIZE"
+[ -n "$MOTD" ]            && ARGS="$ARGS --motd $MOTD"
+[ -n "$PID_FILE" ]        && ARGS="$ARGS --pid-file $PID_FILE"
+[ -n "$PASSWORD" ]        && ARGS="$ARGS --password $PASSWORD"
+[ -n "$PASSWORD_FILE" ]   && ARGS="$ARGS --password-file $PASSWORD_FILE"
+[ -n "$PORTS" ]           && ARGS="$ARGS --ports $PORTS"
+[ -n "$SETUID" ]          && ARGS="$ARGS --setuid $SETUID"
+[ -n "$SSL_CERT_FILE" ]   && ARGS="$ARGS --ssl-cert-file $SSL_CERT_FILE"
+[ -n "$SSL_KEY_FILE" ]    && ARGS="$ARGS --ssl-key-file $SSL_KEY_FILE"
+[ -n "$SSL_PEM_FILE" ]    && ARGS="$ARGS --ssl-pem-file $SSL_PEM_FILE"
+[ -n "$STATE_DIR" ]       && ARGS="$ARGS --state-dir $STATE_DIR"
+[ -n "$VERBOSE" ]         && ARGS="$ARGS --verbose"
+
+exec python -m miniircd $ARGS "$@"
