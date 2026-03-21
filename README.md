@@ -17,12 +17,12 @@ From source:
 git clone https://github.com/josh56432/miniircd-docker.git
 cd miniircd-docker
 docker build -t miniircd .
-docker run -p 6667:6667 -e PORTS=6667 -e PASSWORD=secret miniircd
+docker run -p 6667:6667 -e PORTS=6667 -e SETUID=root miniircd
 ```
 
 Dockerhub:
 ```bash
-docker run -p 6667:6667 -e PORTS=6667 -e PASSWORD=secret docker.io/josh56432/miniircd
+docker run -p 6667:6667 -e PORTS=6667 -e SETUID=root docker.io/josh56432/miniircd
 ```
 (Podman compatible)
 
