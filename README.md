@@ -56,7 +56,7 @@ This container wraps miniircd server. Instead of passing `--flags` directly, con
 ## Quick Start
 
 ```bash
-docker run -e PORTS=6667 -e PASSWORD=secret myimage
+docker run -e PORTS=6667 -e PASSWORD=secret josh56432/miniircd
 ```
 
 ---
@@ -98,7 +98,7 @@ Each `--flag` has a corresponding `-e` environment variable equivalent.
 ### Minimal — plain IRC server on port 6667
 
 ```bash
-docker run -e PORTS=6667 myimage
+docker run -e PORTS=6667 josh56432/miniircd
 ```
 
 ### With password and logging
@@ -109,7 +109,7 @@ docker run \
   -e PASSWORD=secret \
   -e LOG_FILE=/var/log/ircd.log \
   -e LOG_COUNT=5 \
-  myimage
+  josh56432/miniircd
 ```
 
 ### SSL enabled
@@ -120,7 +120,7 @@ docker run \
   -e SSL_CERT_FILE=/certs/server.crt \
   -e SSL_KEY_FILE=/certs/server.key \
   -v /path/to/certs:/certs \
-  myimage
+  josh56432/miniircd
 ```
 
 ### Debug mode with verbose output
@@ -130,7 +130,7 @@ docker run \
   -e PORTS=6667 \
   -e DEBUG=1 \
   -e VERBOSE=1 \
-  myimage
+  josh56432/miniircd
 ```
 
 ### Using an env file
@@ -138,7 +138,7 @@ docker run \
 For many variables, use `--env-file` instead of multiple `-e` flags:
 
 ```bash
-docker run --env-file .env myimage
+docker run --env-file .env josh56432/miniircd
 ```
 
 Example `.env` file:
@@ -160,7 +160,7 @@ VERBOSE=1
 If you prefer, you can still pass `--` flags directly to the container by appending them after the image name:
 
 ```bash
-docker run myimage --ports 6667 --password secret --verbose
+docker run josh56432/miniircd --ports 6667 --password secret --verbose
 ```
 
 This can be combined with `-e` variables — direct flags take precedence over environment variables for the same option.
