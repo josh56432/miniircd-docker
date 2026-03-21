@@ -1,4 +1,4 @@
-miniircd -- A (very) simple Internet Relay Chat (IRC) server
+miniircd -- A (very) simple Internet Relay Chat (IRC) server (which i just ported to a dockerfile)
 ============================================================
 
 Description
@@ -8,6 +8,23 @@ miniircd is a small and limited IRC server written in Python. Despite its size,
 it is a functional alternative to a full-blown ircd for private or internal
 use. Installation is simple; no configuration is required.
 
+This is a Dockerfile fork
+
+Installation
+--------
+From source:
+```bash
+git clone https://github.com/josh56432/miniircd-docker.git
+cd miniircd-docker
+docker build -t miniircd .
+docker run -p 6667:6667 -e PORTS=6667 -e PASSWORD=secret miniircd
+```
+
+Dockerhub:
+```bash
+docker run -p 6667:6667 -e PORTS=6667 -e PASSWORD=secret docker.io/josh56432/miniircd
+```
+(Podman compatible)
 
 Features
 --------
@@ -32,45 +49,121 @@ Limitations
 * No reverse DNS lookup.
 * No other mechanism to reject clients than requiring a password.
 
+# Docker Environment Variable Usage
 
-Requirements
-------------
+This container wraps miniircd server. Instead of passing `--flags` directly, configure the server using Docker's `-e` (environment variable) flags.
 
-Python 3.6 or newer. Get it at <https://www.python.org>.
+## Quick Start
 
+```bash
+docker run -e PORTS=6667 -e PASSWORD=secret myimage
+```
 
-Installation
-------------
+---
 
-No special installation needed: Just clone the repository and execute miniircd:
+## Flag Reference
 
-    git clone https://github.com/jrosdahl/miniircd.git
-    cd miniircd
-    ./miniircd --help
+Each `--flag` has a corresponding `-e` environment variable equivalent.
 
-If you do want to install miniircd, there are several options:
+| `--` Flag | `-e` Environment Variable | Example Value |
+|---|---|---|
+| `--channel-log-dir X` | `CHANNEL_LOG_DIR` | `/var/log/channels` |
+| `--chroot X` | `CHROOT` | `/var/run/ircd` |
+| `--cloak X` | `CLOAK` | `myhostname.com` |
+| `-d, --daemon` | `DAEMON` | `1` |
+| `--ipv6` | `IPV6` | `1` |
+| `--debug` | `DEBUG` | `1` |
+| `--listen X` | `LISTEN` | `0.0.0.0` |
+| `--log-count X` | `LOG_COUNT` | `10` |
+| `--log-file X` | `LOG_FILE` | `/var/log/ircd.log` |
+| `--log-max-size X` | `LOG_MAX_SIZE` | `10` |
+| `--motd X` | `MOTD` | `/etc/ircd/motd.txt` |
+| `--pid-file X` | `PID_FILE` | `/var/run/ircd.pid` |
+| `-p, --password X` | `PASSWORD` | `mysecretpassword` |
+| `--password-file X` | `PASSWORD_FILE` | `/run/secrets/password` |
+| `--ports X` | `PORTS` | `6667,6697` |
+| `--setuid U[:G]` | `SETUID` | `ircd:ircd` |
+| `--ssl-cert-file FILE` | `SSL_CERT_FILE` | `/certs/server.crt` |
+| `--ssl-key-file FILE` | `SSL_KEY_FILE` | `/certs/server.key` |
+| `-s, --ssl-pem-file FILE` | `SSL_PEM_FILE` | `/certs/server.pem` |
+| `--state-dir X` | `STATE_DIR` | `/var/lib/ircd` |
+| `--verbose` | `VERBOSE` | `1` |
 
-1. Clone the repository and copy the executable file to a directory in PATH:
+> **Boolean flags** (`--daemon`, `--ipv6`, `--debug`, `--verbose`) are enabled by setting their variable to any non-empty value (e.g. `1` or `true`). Omitting the variable disables them.
 
-        git clone https://github.com/jrosdahl/miniircd.git
-        cd miniircd
-        cp miniircd /usr/local/bin  # or some other directory in your PATH
+---
 
-   You can then execute the program like this:
+## Examples
 
-        miniircd --help
+### Minimal — plain IRC server on port 6667
 
-2. Install miniircd as a package from the [miniircd PyPI project].
+```bash
+docker run -e PORTS=6667 myimage
+```
 
-   You can then execute the program with
+### With password and logging
 
-        miniircd --help
+```bash
+docker run \
+  -e PORTS=6667 \
+  -e PASSWORD=secret \
+  -e LOG_FILE=/var/log/ircd.log \
+  -e LOG_COUNT=5 \
+  myimage
+```
 
-   or as a module like this:
+### SSL enabled
 
-        python3 -m miniircd --help
+```bash
+docker run \
+  -e PORTS=6697 \
+  -e SSL_CERT_FILE=/certs/server.crt \
+  -e SSL_KEY_FILE=/certs/server.key \
+  -v /path/to/certs:/certs \
+  myimage
+```
 
-[miniircd PyPI project]: https://pypi.org/project/miniircd/
+### Debug mode with verbose output
+
+```bash
+docker run \
+  -e PORTS=6667 \
+  -e DEBUG=1 \
+  -e VERBOSE=1 \
+  myimage
+```
+
+### Using an env file
+
+For many variables, use `--env-file` instead of multiple `-e` flags:
+
+```bash
+docker run --env-file .env myimage
+```
+
+Example `.env` file:
+
+```env
+PORTS=6667,6697
+PASSWORD=mysecretpassword
+LOG_FILE=/var/log/ircd.log
+LOG_COUNT=10
+LOG_MAX_SIZE=10
+STATE_DIR=/var/lib/ircd
+VERBOSE=1
+```
+
+---
+
+## Passing Flags Directly (Alternative)
+
+If you prefer, you can still pass `--` flags directly to the container by appending them after the image name:
+
+```bash
+docker run myimage --ports 6667 --password secret --verbose
+```
+
+This can be combined with `-e` variables — direct flags take precedence over environment variables for the same option.
 
 
 Using `--chroot` and `--setuid`
@@ -125,13 +218,13 @@ License
 GNU General Public License version 2 or later.
 
 
-Primary author
+Primary author miniircd
 --------------
 
 - Joel Rosdahl <joel@rosdahl.net>
 
 
-Contributors
+Contributors miniircd
 ------------
 
 - Alex Wright
