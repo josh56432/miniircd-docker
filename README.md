@@ -1,12 +1,6 @@
 miniircd -- A (very) simple Internet Relay Chat (IRC) server (which i just ported to a dockerfile)
 ============================================================
 
-## ☕ Support This Project
-
-<a href="https://www.buymeacoffee.com/josh56432" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="40" />
-</a>
-
 Description
 -----------
 
@@ -247,3 +241,10 @@ Contributors miniircd
 - Matt Behrens
 - Michael Rene Wilcox
 - Ron Fritz
+
+  
+## ☕ Support This Project
+
+<a href="https://www.buymeacoffee.com/josh56432" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="40" />
+</a>
